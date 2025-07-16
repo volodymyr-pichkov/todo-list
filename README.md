@@ -1,3 +1,5 @@
+Link to Netlify: https://to-do-list-app-portfolio.netlify.app/
+
 # To-Do App
 
 A simple To-Do List app where you can add, edit, complete, and delete tasks
