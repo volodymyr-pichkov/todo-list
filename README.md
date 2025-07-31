@@ -2,36 +2,28 @@ Link to Netlify: https://to-do-list-app-portfolio.netlify.app/
 
 # To-Do App
 
-A simple To-Do List app where you can add, edit, complete, and delete tasks
+A simple and elegant To-Do list application for managing tasks with visual progress indication and local storage.
 
-## How to use
+## Tech Stack
 
-- Type a new task in the input box.
-- Click the "+" button or press Enter to add the task.
-- Check the box next to a task to mark it as completed.
-- Click the pencil icon to edit a task (only if it is not completed).
-- Click the trash icon to delete a task.
-- The progress bar and numbers show how many tasks are done out of the total.
-- When all tasks are completed, confetti animation appears!
+HTML5
 
-## Features
+CSS3
 
-- Add new tasks
-- Mark tasks as completed
-- Edit task text
-- Delete tasks
-- Save tasks in localStorage so they stay after refreshing the page
-- Confetti animation when all tasks are done
-- Responsive design for different screen sizes
+JavaScript
 
+Font Awesome for icons
 
-## Technologies
+## Accessibility
 
-- HTML, CSS, JavaScript
+Uses ARIA attributes (aria-label, role, aria-live, etc.) for improved accessibility.
 
+Fully keyboard navigable forms and buttons.
 
-## How to run
+## Getting Started
 
-1. Clone the repo or copy the files
-2. Open `index.html` in your browser
-3. Start using the app
+Clone the repository
+
+Open index.html in your browser
+
+Start adding tasks

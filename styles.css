@@ -1,42 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
 
-@media (min-width: 601px) {
-  .container {
-    margin: 0 20px;
-    padding: 0 10px;
-  }
-
-  .todo-app {
-    padding: 1.5rem;
-    gap: 20px;
-  }
-
-  #numbers {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #ff6f91;
-    border: 2px solid rgba(255, 194, 209, 0.3);
-    font-weight: bold;
-    border-radius: 50%;
-    min-width: 60px;
-    min-height: 60px;
-    padding: 0 12px;
-    font-size: 1.5rem;
-    white-space: nowrap;
-    box-sizing: border-box;
-    transition: width 0.3s ease;
-  }
-
-  .input-area input {
-    font-size: 1rem;
-  }
-
-  #task-list li {
-    font-size: 1rem;
-  }
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -53,7 +16,7 @@ body {
   background-attachment: fixed;
 }
 
-.container {
+.page {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,7 +25,7 @@ body {
   padding: 0 20px;
 }
 
-.todo-app {
+.todo {
   width: 100%;
   max-width: 400px;
   padding: 2rem;
@@ -78,18 +41,79 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.todo-app h1 {
+.todo__title {
   font-size: 2rem;
 }
 
-.input-area {
+.todo__progress {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
 
-.input-area input {
+.progress__info {
+  flex: 1;
+}
+
+.progress__text {
+  margin-bottom: 8px;
+}
+
+.progress__bar {
+  width: 100%;
+  height: 7px;
+  background: rgba(255, 194, 209, 0.3);
+  border-radius: 20px;
+  position: relative;
+}
+
+.progress__fill {
+  width: 0; /* изначально 0, будет обновляться скриптом */
+  height: 100%;
+  background: #ff6f91;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.progress__numbers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ff6f91;
+  border: 2px solid rgba(255, 194, 209, 0.3);
+  font-weight: bold;
+  border-radius: 50%;
+  min-width: 60px;
+  min-height: 60px;
+  padding: 0 12px;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: width 0.3s ease;
+  margin-left: 15px;
+}
+
+.todo__form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+.form__label.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.form__input {
   flex: 1;
   padding: 10px 17px;
   font-size: 1.1rem;
@@ -100,15 +124,14 @@ body {
   color: #dbdbdb;
 }
 
-.input-area input::placeholder {
+.form__input::placeholder {
   color: #bcbcbc;
 }
 
-.input-area button {
+.form__button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 10px;
   padding: 8px;
   border-radius: 50%;
   color: #fff;
@@ -119,23 +142,21 @@ body {
   transition: all 0.2s ease;
 }
 
-.input-area button:hover {
+.form__button:hover {
   transform: scale(1.1);
   background: #ff6f91;
 }
 
-.todos-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#task-list {
+.todo__list {
   width: 100%;
 }
 
-#task-list li {
+.task-list__items {
+  list-style: none;
+  width: 100%;
+}
+
+.task-list__items li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -149,11 +170,13 @@ body {
   transition: box-shadow 0.2s ease;
 }
 
-#task-list li:hover {
+.task-list__items li:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#task-list li .checkbox {
+/* Добавь класс checkbox к чекбоксу в разметке для соответствия */
+
+.task-list__items li .checkbox {
   min-width: 20px;
   height: 20px;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -164,12 +187,12 @@ body {
   transition: all 0.2s ease;
 }
 
-#task-list li.checkbox:checked {
+.task-list__items li .checkbox:checked {
   background: #ff6f91;
   transform: scale(1.1);
 }
 
-#task-list li .checkbox:checked::before {
+.task-list__items li .checkbox:checked::before {
   content: "\2713";
   color: #fff;
   display: flex;
@@ -178,13 +201,13 @@ body {
   font-size: 1rem;
 }
 
-#task-list li span {
+.task-list__items li span {
   flex: 1;
   margin-left: 10px;
   overflow-wrap: break-word;
 }
 
-#task-list li.completed span {
+.task-list__items li.completed span {
   text-decoration-line: line-through;
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
@@ -192,7 +215,7 @@ body {
   color: #000;
 }
 
-#task-list li.completed .edit-btn {
+.task-list__items li.completed .edit-btn {
   opacity: 0.5;
   pointer-events: none;
 }
@@ -230,51 +253,28 @@ body {
   background: #ff6f91;
 }
 
-.static-container {
-  padding: 15px 20px;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.18);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-}
+@media (min-width: 601px) {
+  .page {
+    margin: 0 20px;
+    padding: 0 10px;
+  }
 
-.details {
-  width: 100%;
-}
+  .todo {
+    padding: 1.5rem;
+    gap: 20px;
+  }
 
-.details h3 {
-  color: #fff;
-}
+  .progress__numbers {
+    min-width: 60px;
+    min-height: 60px;
+    font-size: 1.5rem;
+  }
 
-#progressbar {
-  width: 100%;
-  height: 7px;
-  background: rgba(255, 194, 209, 0.3);
-  border-radius: 20px;
-  position: relative;
-  margin-top: 15px;
-}
+  .form__input {
+    font-size: 1rem;
+  }
 
-#progress {
-  width: 50%;
-  height: 100%;
-  background: #ff6f91;
-  border-radius: 20px;
-  transition: width 0.3s ease;
-}
-
-#numbers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 80px;
-  background: #ff6f91;
-  border: 2px solid rgba(255, 194, 209, 0.3);
-  font-weight: bold;
-  border-radius: 50%;
-  font-size: 1.5rem;
+  .task-list__items li {
+    font-size: 1rem;
+  }
 }

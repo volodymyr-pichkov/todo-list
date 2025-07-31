@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do App</title>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -14,33 +15,64 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <div class="todo-app">
-        <h1>To-Do App</h1>
-        <div class="static-container">
-          <div class="details">
-            <h3>Keep it up!</h3>
-            <div id="progressbar">
-              <div id="progress"></div>
+    <main class="page">
+      <section class="todo">
+        <h1 class="todo__title">To-Do App</h1>
+
+        <div class="todo__progress progress">
+          <div class="progress__info">
+            <h2 class="progress__text">Keep it up!</h2>
+            <div
+              class="progress__bar"
+              id="progressbar"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="progress__fill" id="progress"></div>
             </div>
           </div>
-          <div class="static-number">
-            <p id="numbers">0 / 0</p>
-          </div>
+          <p class="progress__numbers" id="numbers" aria-live="polite">0 / 0</p>
         </div>
-        <form class="input-area">
-          <input type="text" id="task-input" placeholder="Add a new task..." />
-          <button type="submit" id="add-task-btn">
-            <i class="fa-solid fa-plus"></i>
+
+        <form
+          class="todo__form form"
+          id="todo-form"
+          aria-label="Add a new task"
+        >
+          <label for="task-input" class="form__label visually-hidden"
+            >New Task</label
+          >
+          <input
+            class="form__input"
+            type="text"
+            id="task-input"
+            name="task"
+            placeholder="Add a new task..."
+            autocomplete="off"
+            required
+          />
+          <button
+            class="form__button"
+            type="submit"
+            id="add-task-btn"
+            aria-label="Add task"
+          >
+            <i class="fa-solid fa-plus" aria-hidden="true"></i>
           </button>
         </form>
-        <div class="todos-container">
-          <ul id="task-list"></ul>
-        </div>
-      </div>
-    </div>
 
-    <script src="main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+        <section class="todo__list task-list" aria-labelledby="task-list-title">
+          <ul class="task-list__items" id="task-list"></ul>
+        </section>
+      </section>
+    </main>
+
+    <script src="main.js" defer></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"
+      defer
+    ></script>
   </body>
 </html>

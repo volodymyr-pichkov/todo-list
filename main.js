@@ -2,19 +2,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const taskInput = document.getElementById("task-input");
   const addTaskBtn = document.getElementById("add-task-btn");
   const taskList = document.getElementById("task-list");
-  const todosContainer = document.querySelector(".todos-container");
+  const todo = document.querySelector(".todo");
   const progressBar = document.getElementById("progress");
   const progressNumbers = document.getElementById("numbers");
 
   let taskBeingEdited = null;
 
+  const createIcon = (className) => {
+    const icon = document.createElement("i");
+    icon.className = className;
+    return icon;
+  };
+  const plusIcon = createIcon("fa-solid fa-plus");
+  const saveIcon = createIcon("fa-solid fa-floppy-disk");
+
+  const setAddButtonIcon = (icon) => {
+    addTaskBtn.textContent = "";
+    addTaskBtn.appendChild(icon);
+  };
+
   const toggleEmptyState = () => {
-    todosContainer.style.width = taskList.children.length > 0 ? "100%" : "50%";
+    todo.style.width = taskList.children.length > 0 ? "100%" : "50%";
   };
 
   const updateProgress = () => {
     const totalTasks = taskList.children.length;
-    const completedTasks = taskList.querySelectorAll(".checkbox:checked").length;
+    const completedTasks =
+      taskList.querySelectorAll(".checkbox:checked").length;
 
     progressBar.style.width = totalTasks
       ? `${(completedTasks / totalTasks) * 100}%`
@@ -27,6 +41,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const saveTasksToLocalStorage = () => {
+    const tasks = Array.from(taskList.children).map((li) => ({
+      text: li.querySelector("span").textContent,
+      completed: li.querySelector(".checkbox").checked,
+    }));
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+
   const loadTasksFromLocalStorage = () => {
     try {
       const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
@@ -35,17 +57,44 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       toggleEmptyState();
       updateProgress();
-    } catch (error) {
-      console.log("Ошибка при загрузке задач из localStorage:", error);
+    } catch {
+      console.warn("Ошибка при загрузке задач из localStorage");
     }
   };
 
-  const saveTasksToLocalStorage = () => {
-    const tasks = Array.from(taskList.querySelectorAll("li")).map((li) => ({
-      text: li.querySelector("span").textContent,
-      completed: li.querySelector(".checkbox").checked,
-    }));
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+  const createTaskElement = (text, completed) => {
+    const li = document.createElement("li");
+
+    const checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
+    checkBox.className = "checkbox";
+    checkBox.checked = completed;
+
+    const span = document.createElement("span");
+    span.textContent = text;
+
+    const controls = document.createElement("div");
+    controls.className = "task-controls";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn";
+    editBtn.title = "Edit task";
+    editBtn.appendChild(createIcon("fa-solid fa-pen"));
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
+    deleteBtn.title = "Delete task";
+    deleteBtn.appendChild(createIcon("fa-solid fa-trash"));
+
+    controls.append(editBtn, deleteBtn);
+    li.append(checkBox, span, controls);
+
+    if (completed) {
+      li.classList.add("completed");
+      editBtn.disabled = true;
+    }
+
+    return li;
   };
 
   const addTask = (text = "", completed = false) => {
@@ -56,10 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const span = taskBeingEdited.querySelector("span");
       span.textContent = taskText;
       taskBeingEdited = null;
-      addTaskBtn.textContent = "";
-      const icon = document.createElement("i");
-      icon.className = "fa-solid fa-plus";
-      addTaskBtn.appendChild(icon);
+      setAddButtonIcon(plusIcon);
       taskInput.value = "";
       toggleEmptyState();
       updateProgress();
@@ -67,85 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const li = document.createElement("li");
-
-    const checkBox = document.createElement("input");
-    checkBox.type = "checkbox";
-    checkBox.className = "checkbox";
-    checkBox.checked = completed;
-
-    const span = document.createElement("span");
-    span.textContent = taskText;
-
-    const div = document.createElement("div");
-    div.className = "task-controls";
-
-    const editBtn = document.createElement("button");
-    editBtn.className = "edit-btn";
-
-    const editIcon = document.createElement("i");
-    editIcon.className = "fa-solid fa-pen";
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "delete-btn";
-
-    const deleteIcon = document.createElement("i");
-    deleteIcon.className = "fa-solid fa-trash";
-
-    li.appendChild(checkBox);
-    li.appendChild(span);
-
-    div.appendChild(editBtn);
-    editBtn.appendChild(editIcon);
-
-    div.appendChild(deleteBtn);
-    deleteBtn.appendChild(deleteIcon);
-
-    li.appendChild(div);
-
+    const li = createTaskElement(taskText, completed);
     taskList.appendChild(li);
-
-    if (completed) {
-      li.classList.add("completed");
-      editBtn.disabled = true;
-    }
-
-    checkBox.addEventListener("change", () => {
-      const isChecked = checkBox.checked;
-      li.classList.toggle("completed", isChecked);
-      editBtn.disabled = isChecked;
-      updateProgress();
-      saveTasksToLocalStorage();
-    });
-
-    editBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      if (!checkBox.checked) {
-        taskBeingEdited = li;
-        taskInput.value = span.textContent;
-        taskInput.focus();
-        addTaskBtn.textContent = "";
-        const saveIcon = document.createElement("i");
-        saveIcon.className = "fa-solid fa-floppy-disk";
-        addTaskBtn.appendChild(saveIcon);
-      }
-    });
-
-    deleteBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      if (taskBeingEdited === li) {
-        taskBeingEdited = null;
-        addTaskBtn.textContent = "";
-        const plusIcon = document.createElement("i");
-        plusIcon.className = "fa-solid fa-plus";
-        addTaskBtn.appendChild(plusIcon);
-        taskInput.value = "";
-      }
-      li.remove();
-      toggleEmptyState();
-      updateProgress();
-      saveTasksToLocalStorage();
-    });
 
     taskInput.value = "";
     toggleEmptyState();
@@ -153,20 +122,67 @@ document.addEventListener("DOMContentLoaded", () => {
     saveTasksToLocalStorage();
   };
 
+  taskList.addEventListener("click", (event) => {
+    const li = event.target.closest("li");
+    if (!li) return;
+
+    if (
+      event.target.classList.contains("edit-btn") ||
+      event.target.closest(".edit-btn")
+    ) {
+      if (li.querySelector(".checkbox").checked) return; // нельзя редактировать выполненную
+      taskBeingEdited = li;
+      taskInput.value = li.querySelector("span").textContent;
+      taskInput.focus();
+      setAddButtonIcon(saveIcon);
+    }
+
+    if (
+      event.target.classList.contains("delete-btn") ||
+      event.target.closest(".delete-btn")
+    ) {
+      if (taskBeingEdited === li) {
+        taskBeingEdited = null;
+        setAddButtonIcon(plusIcon);
+        taskInput.value = "";
+      }
+      li.remove();
+      toggleEmptyState();
+      updateProgress();
+      saveTasksToLocalStorage();
+    }
+  });
+
+  taskList.addEventListener("change", (event) => {
+    if (event.target.classList.contains("checkbox")) {
+      const li = event.target.closest("li");
+      const isChecked = event.target.checked;
+
+      li.classList.toggle("completed", isChecked);
+      li.querySelector(".edit-btn").disabled = isChecked;
+
+      updateProgress();
+      saveTasksToLocalStorage();
+    }
+  });
+
   const handleAddTask = (e) => {
     e.preventDefault();
     addTask();
   };
 
   addTaskBtn.addEventListener("click", handleAddTask);
+
   taskInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       handleAddTask(e);
     }
   });
-  updateProgress();
 
+  setAddButtonIcon(plusIcon);
   loadTasksFromLocalStorage();
+  updateProgress();
+  toggleEmptyState();
 });
 
 function shootConfetti() {
