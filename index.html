@@ -19,33 +19,31 @@
       <section class="todo">
         <h1 class="todo__title">To-Do App</h1>
 
-        <div class="todo__progress progress">
-          <div class="progress__info">
-            <h2 class="progress__text">Keep it up!</h2>
+        <div class="todo__progress">
+          <div class="todo__progress-info">
+            <h2 class="todo__progress-text">Keep it up!</h2>
             <div
-              class="progress__bar"
+              class="todo__progress-bar"
               id="progressbar"
               role="progressbar"
               aria-valuemin="0"
               aria-valuemax="100"
               aria-valuenow="0"
             >
-              <div class="progress__fill" id="progress"></div>
+              <div class="todo__progress-fill" id="progress"></div>
             </div>
           </div>
-          <p class="progress__numbers" id="numbers" aria-live="polite">0 / 0</p>
+          <p class="todo__progress-numbers" id="numbers" aria-live="polite">
+            0 / 0
+          </p>
         </div>
 
-        <form
-          class="todo__form form"
-          id="todo-form"
-          aria-label="Add a new task"
-        >
-          <label for="task-input" class="form__label visually-hidden"
-            >New Task</label
-          >
+        <form class="todo__form" id="todo-form" aria-label="Add a new task">
+          <label for="task-input" class="todo__form-label visually-hidden">
+            New Task
+          </label>
           <input
-            class="form__input"
+            class="todo__form-input"
             type="text"
             id="task-input"
             name="task"
@@ -54,7 +52,7 @@
             required
           />
           <button
-            class="form__button"
+            class="todo__form-button"
             type="submit"
             id="add-task-btn"
             aria-label="Add task"
@@ -63,8 +61,8 @@
           </button>
         </form>
 
-        <section class="todo__list task-list" aria-labelledby="task-list-title">
-          <ul class="task-list__items" id="task-list"></ul>
+        <section class="todo__list" aria-labelledby="task-list-title">
+          <ul class="todo__list-items" id="task-list"></ul>
         </section>
       </section>
     </main>

@@ -27,8 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updateProgress = () => {
     const totalTasks = taskList.children.length;
-    const completedTasks =
-      taskList.querySelectorAll(".checkbox:checked").length;
+    const completedTasks = taskList.querySelectorAll(
+      ".todo__list-checkbox:checked"
+    ).length;
 
     progressBar.style.width = totalTasks
       ? `${(completedTasks / totalTasks) * 100}%`
@@ -43,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const saveTasksToLocalStorage = () => {
     const tasks = Array.from(taskList.children).map((li) => ({
-      text: li.querySelector("span").textContent,
-      completed: li.querySelector(".checkbox").checked,
+      text: li.querySelector(".todo__list-text").textContent,
+      completed: li.querySelector(".todo__list-checkbox").checked,
     }));
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
@@ -67,22 +68,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const checkBox = document.createElement("input");
     checkBox.type = "checkbox";
-    checkBox.className = "checkbox";
+    checkBox.className = "todo__list-checkbox";
     checkBox.checked = completed;
 
     const span = document.createElement("span");
+    span.className = "todo__list-text";
     span.textContent = text;
 
     const controls = document.createElement("div");
-    controls.className = "task-controls";
+    controls.className = "todo__task-controls";
 
     const editBtn = document.createElement("button");
-    editBtn.className = "edit-btn";
+    editBtn.className = "todo__task-controls-btn todo__task-controls-btn--edit";
     editBtn.title = "Edit task";
     editBtn.appendChild(createIcon("fa-solid fa-pen"));
 
     const deleteBtn = document.createElement("button");
-    deleteBtn.className = "delete-btn";
+    deleteBtn.className =
+      "todo__task-controls-btn todo__task-controls-btn--delete";
     deleteBtn.title = "Delete task";
     deleteBtn.appendChild(createIcon("fa-solid fa-trash"));
 
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
     li.append(checkBox, span, controls);
 
     if (completed) {
-      li.classList.add("completed");
+      li.classList.add("todo__list-item--completed");
       editBtn.disabled = true;
     }
 
@@ -102,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!taskText) return;
 
     if (taskBeingEdited) {
-      const span = taskBeingEdited.querySelector("span");
+      const span = taskBeingEdited.querySelector(".todo__list-text");
       span.textContent = taskText;
       taskBeingEdited = null;
       setAddButtonIcon(plusIcon);
@@ -126,21 +129,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const li = event.target.closest("li");
     if (!li) return;
 
-    if (
-      event.target.classList.contains("edit-btn") ||
-      event.target.closest(".edit-btn")
-    ) {
-      if (li.querySelector(".checkbox").checked) return; // нельзя редактировать выполненную
+    if (event.target.closest(".todo__task-controls-btn--edit")) {
+      if (li.querySelector(".todo__list-checkbox").checked) return;
       taskBeingEdited = li;
-      taskInput.value = li.querySelector("span").textContent;
+      taskInput.value = li.querySelector(".todo__list-text").textContent;
       taskInput.focus();
       setAddButtonIcon(saveIcon);
     }
 
-    if (
-      event.target.classList.contains("delete-btn") ||
-      event.target.closest(".delete-btn")
-    ) {
+    if (event.target.closest(".todo__task-controls-btn--delete")) {
       if (taskBeingEdited === li) {
         taskBeingEdited = null;
         setAddButtonIcon(plusIcon);
@@ -154,12 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   taskList.addEventListener("change", (event) => {
-    if (event.target.classList.contains("checkbox")) {
+    if (event.target.classList.contains("todo__list-checkbox")) {
       const li = event.target.closest("li");
       const isChecked = event.target.checked;
 
-      li.classList.toggle("completed", isChecked);
-      li.querySelector(".edit-btn").disabled = isChecked;
+      li.classList.toggle("todo__list-item--completed", isChecked);
+      li.querySelector(".todo__task-controls-btn--edit").disabled = isChecked;
 
       updateProgress();
       saveTasksToLocalStorage();

@@ -52,15 +52,15 @@ body {
   width: 100%;
 }
 
-.progress__info {
+.todo__progress-info {
   flex: 1;
 }
 
-.progress__text {
+.todo__progress-text {
   margin-bottom: 8px;
 }
 
-.progress__bar {
+.todo__progress-bar {
   width: 100%;
   height: 7px;
   background: rgba(255, 194, 209, 0.3);
@@ -68,15 +68,15 @@ body {
   position: relative;
 }
 
-.progress__fill {
-  width: 0; /* изначально 0, будет обновляться скриптом */
+.todo__progress-fill {
+  width: 0;
   height: 100%;
   background: #ff6f91;
   border-radius: 20px;
   transition: width 0.3s ease;
 }
 
-.progress__numbers {
+.todo__progress-numbers {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,7 +102,7 @@ body {
   gap: 10px;
 }
 
-.form__label.visually-hidden {
+.todo__form-label.visually-hidden {
   position: absolute !important;
   width: 1px;
   height: 1px;
@@ -113,7 +113,7 @@ body {
   border: 0;
 }
 
-.form__input {
+.todo__form-input {
   flex: 1;
   padding: 10px 17px;
   font-size: 1.1rem;
@@ -124,11 +124,11 @@ body {
   color: #dbdbdb;
 }
 
-.form__input::placeholder {
+.todo__form-input::placeholder {
   color: #bcbcbc;
 }
 
-.form__button {
+.todo__form-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -142,7 +142,7 @@ body {
   transition: all 0.2s ease;
 }
 
-.form__button:hover {
+.todo__form-button:hover {
   transform: scale(1.1);
   background: #ff6f91;
 }
@@ -151,12 +151,12 @@ body {
   width: 100%;
 }
 
-.task-list__items {
+.todo__list-items {
   list-style: none;
   width: 100%;
 }
 
-.task-list__items li {
+.todo__list-items li {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -170,13 +170,11 @@ body {
   transition: box-shadow 0.2s ease;
 }
 
-.task-list__items li:hover {
+.todo__list-items li:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Добавь класс checkbox к чекбоксу в разметке для соответствия */
-
-.task-list__items li .checkbox {
+.todo__list-checkbox {
   min-width: 20px;
   height: 20px;
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -187,12 +185,12 @@ body {
   transition: all 0.2s ease;
 }
 
-.task-list__items li .checkbox:checked {
+.todo__list-checkbox:checked {
   background: #ff6f91;
   transform: scale(1.1);
 }
 
-.task-list__items li .checkbox:checked::before {
+.todo__list-checkbox:checked::before {
   content: "\2713";
   color: #fff;
   display: flex;
@@ -201,13 +199,13 @@ body {
   font-size: 1rem;
 }
 
-.task-list__items li span {
+.todo__list-text {
   flex: 1;
   margin-left: 10px;
   overflow-wrap: break-word;
 }
 
-.task-list__items li.completed span {
+.todo__list-item--completed .todo__list-text {
   text-decoration-line: line-through;
   text-decoration-style: solid;
   text-decoration-thickness: 2px;
@@ -215,18 +213,18 @@ body {
   color: #000;
 }
 
-.task-list__items li.completed .edit-btn {
+.todo__list-item--completed .todo__task-controls-btn--edit {
   opacity: 0.5;
   pointer-events: none;
 }
 
-.task-controls {
+.todo__task-controls {
   display: flex;
   gap: 10px;
   margin-right: auto;
 }
 
-.task-controls button {
+.todo__task-controls-btn {
   background: rgba(255, 194, 209, 0.3);
   border: none;
   border-radius: 50%;
@@ -241,15 +239,15 @@ body {
   align-items: center;
 }
 
-.task-controls button:hover {
+.todo__task-controls-btn:hover {
   transform: scale(1.2);
 }
 
-.task-controls .edit-btn {
+.todo__task-controls-btn--edit {
   background: #ffbf00;
 }
 
-.task-controls .delete-btn {
+.todo__task-controls-btn--delete {
   background: #ff6f91;
 }
 
@@ -264,17 +262,17 @@ body {
     gap: 20px;
   }
 
-  .progress__numbers {
+  .todo__progress-numbers {
     min-width: 60px;
     min-height: 60px;
     font-size: 1.5rem;
   }
 
-  .form__input {
+  .todo__form-input {
     font-size: 1rem;
   }
 
-  .task-list__items li {
+  .todo__list-items li {
     font-size: 1rem;
   }
 }
